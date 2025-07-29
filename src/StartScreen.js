@@ -12,9 +12,6 @@ const StartScreen = ({ onStart }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLyric, setCurrentLyric] = useState('');
   const [lyricsHistory, setLyricsHistory] = useState([]);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [isSongEnded, setIsSongEnded] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
   const [showSplitButtons, setShowSplitButtons] = useState(false);
@@ -74,9 +71,7 @@ const StartScreen = ({ onStart }) => {
       const duration = audioRef.current.duration;
       const progress = (currentTime / duration) * 100;
       
-      setCurrentTime(currentTime);
-      setDuration(duration);
-      setProgress(progress);
+
 
              // Check if song has ended
        if (currentTime >= duration) {
@@ -305,7 +300,7 @@ const StartScreen = ({ onStart }) => {
         return (
           <div className="sql-panel">
             <div className="sql-panel-header">Query Parameters</div>
-            <div className="welcome-text">
+            <div className="sql-query" style={{textAlign: 'center', maxWidth: '90%', margin: '0 auto', padding: '20px'}}>
               <p>Pogledaj koliko si <span className="highlight">savršena</span>,</p>
               <p>sve što želim je vidjeti te <span className="highlight">uživo</span>...</p>
               <p>...ako si za...</p>
