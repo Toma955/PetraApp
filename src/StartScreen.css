@@ -1,0 +1,1140 @@
+/* src/StartScreen.css - SQL Server Management Studio Theme */
+
+/* SQL Server Color Palette */
+:root {
+  --sql-dark-blue: #1e1e2e;
+  --sql-darker-blue: #0d1117;
+  --sql-light-blue: #0078d4;
+  --sql-accent-blue: #106ebe;
+  --sql-text-white: #ffffff;
+  --sql-text-gray: #cccccc;
+  --sql-border-gray: #3c3c3c;
+  --sql-hover-blue: #1f97ff;
+  --sql-success-green: #107c10;
+  --sql-warning-orange: #ff8c00;
+  --sql-error-red: #d13438;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--sql-darker-blue);
+  color: var(--sql-text-white);
+  overflow: hidden;
+}
+
+.start-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--sql-darker-blue);
+  z-index: 1;
+}
+
+/* SQL Server Toolbar */
+.icons-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: var(--sql-dark-blue);
+  border-bottom: 1px solid var(--sql-border-gray);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.icon-item {
+  color: var(--sql-text-gray);
+  font-size: 14px;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon-item:hover {
+  color: var(--sql-light-blue);
+}
+
+.icon-item.active {
+  color: var(--sql-light-blue);
+}
+
+/* SQL Server Main Content Area - Vertical Split Layout */
+.welcome-box {
+  width: 100%;
+  height: calc(100vh - 40px);
+  margin: 0 auto;
+  background: var(--sql-darker-blue);
+  border: none;
+  box-shadow: none;
+  perspective: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Enhanced styling for CREATE TABLE view (second step) */
+.welcome-box.second-flipped .welcome-text-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  padding-top: 30px;
+  height: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.welcome-box.second-flipped .sql-panel {
+  width: 100%;
+  max-width: 800px;
+  max-height: 2vh;
+  margin: 0 auto;
+  background: var(--sql-dark-blue);
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-box.second-flipped .sql-panel-header {
+  font-size: 12px;
+  padding: 5px 10px;
+  background: var(--sql-accent-blue);
+  border-bottom: 1px solid var(--sql-border-gray);
+  border-radius: 8px 8px 0 0;
+}
+
+.welcome-box.second-flipped .sql-query {
+  padding: 5px;
+  font-size: 10px;
+  line-height: 1.2;
+  max-height: 2vh;
+  overflow-y: auto;
+  background: var(--sql-darker-blue);
+  border-radius: 0 0 8px 8px;
+}
+
+/* Enhanced styling for Query Parameters view (third step) */
+.welcome-box.third-flipped .welcome-text-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  padding-top: 10px;
+  height: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.welcome-box.third-flipped .sql-panel {
+  width: 100%;
+  max-width: 600px;
+  max-height: 3.5vh;
+  margin: 0 auto;
+  background: var(--sql-dark-blue);
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-box.third-flipped .sql-panel-header {
+  font-size: 18px;
+  padding: 15px 20px;
+  background: var(--sql-accent-blue);
+  border-bottom: 1px solid var(--sql-border-gray);
+  border-radius: 8px 8px 0 0;
+}
+
+.welcome-box.third-flipped .welcome-text {
+  padding: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  background: var(--sql-darker-blue);
+  border-radius: 0 0 8px 8px;
+  max-height: 3.5vh;
+  overflow-y: auto;
+}
+
+/* Styling for welcome-text inside sql-panel */
+.sql-panel .welcome-text {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--sql-text-white);
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.sql-panel .welcome-text p {
+  color: var(--sql-text-white);
+  margin: 10px 0;
+}
+
+.sql-panel .welcome-text .highlight {
+  color: var(--sql-light-blue);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Enhanced styling for Final Query Result view (fourth step) */
+.welcome-box.third-flipped .welcome-text-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  padding-top: 30px;
+  height: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+/* Mobile responsiveness for enhanced views */
+@media (max-width: 768px) {
+  .welcome-box.second-flipped .sql-panel,
+  .welcome-box.third-flipped .sql-panel {
+    max-width: 95%;
+    margin: 10px;
+  }
+  
+  .welcome-box.second-flipped .sql-query,
+  .welcome-box.third-flipped .welcome-text {
+    font-size: 12px;
+    padding: 15px;
+  }
+  
+  .welcome-box.second-flipped .sql-panel-header,
+  .welcome-box.third-flipped .sql-panel-header {
+    font-size: 16px;
+    padding: 12px 15px;
+  }
+}
+
+.welcome-box-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-box-front,
+.welcome-box-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--sql-darker-blue);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.welcome-box-back {
+  background: var(--sql-darker-blue);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.welcome-text-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 20px;
+  overflow: hidden;
+  gap: 5px;
+}
+
+/* SQL Server Text Styling - Vertical Split Layout */
+.welcome-text {
+  color: #000000;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 5px;
+  font-family: 'Segoe UI', sans-serif;
+  background: #ffffff;
+  border: 2px solid #0078d4;
+  border-radius: 8px;
+  width: 100%;
+  height: 15%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  gap: 0px; /* Reduced from 2px to 0px to eliminate gap between header and query */
+}
+
+.welcome-text > * {
+  flex-shrink: 0; /* Prevent flex items from shrinking */
+}
+
+.welcome-text .sql-panel-header {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  width: 100%;
+  margin-bottom: 0; /* Remove margin since we're using gap */
+}
+
+
+
+.welcome-text .sql-connect-dialog {
+  flex: 1; /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.welcome-text .highlight {
+  color: #0078d4;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.welcome-text h1 {
+  color: #000000;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.welcome-text p {
+  margin: 10px 0;
+  color: #333333;
+}
+
+
+
+/* SQL Server Buttons */
+.start-button {
+  padding: 12px 24px;
+  font-size: 14px;
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  text-align: center;
+  font-weight: 500;
+  background: var(--sql-dark-blue);
+  color: var(--sql-text-white);
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.start-button:hover {
+  background: var(--sql-accent-blue);
+  border-color: var(--sql-light-blue);
+}
+
+.start-button:active {
+  background: var(--sql-accent-blue);
+  transform: translateY(1px);
+}
+
+.start-button.playing {
+  background: var(--sql-success-green);
+  border-color: var(--sql-success-green);
+}
+
+.start-button.split {
+  min-width: 140px;
+  margin: 0;
+}
+
+.start-button.split.left {
+  background: var(--sql-success-green);
+  border-color: var(--sql-success-green);
+}
+
+.start-button.split.right {
+  background: var(--sql-error-red);
+  border-color: var(--sql-error-red);
+}
+
+.start-button.instagram-style {
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+  border: none;
+}
+
+/* SQL Server Button Container */
+.button-container {
+  position: fixed;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  z-index: 10;
+  padding: 0 20px;
+  transition: bottom 0.5s ease-out;
+}
+
+.button-container.clicked {
+  bottom: 30px;
+}
+
+/* SQL Server Lyrics Display - Table Style - Vertical Split Layout */
+.lyrics-container {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  height: 30%; /* Decreased from 40% to 30% to make it smaller */
+  z-index: 5;
+  overflow-y: auto;
+  background: #ffffff !important;
+  border: 2px solid #0078d4;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
+}
+
+.lyrics-display {
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  text-align: center;
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #0078d4;
+  background: #ffffff !important;
+  scroll-behavior: smooth;
+}
+
+.lyrics-line {
+  margin: 2px 0;
+  padding: 2px 0;
+  animation: fadeInUp 0.3s ease-out;
+  display: table-row;
+}
+
+.lyrics-time-container {
+  display: table-cell;
+  width: 80px;
+  padding: 2px 8px;
+  border-right: 1px solid #0078d4;
+  border-bottom: 1px solid #0078d4;
+  vertical-align: top;
+}
+
+.lyrics-time {
+  color: #666666;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
+}
+
+.lyrics-text {
+  display: table-cell;
+  padding: 2px 8px;
+  text-align: center;
+  vertical-align: top;
+  border-bottom: 1px solid #0078d4;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* SQL Server Messages */
+.final-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--sql-text-white);
+  font-size: 20px;
+  font-weight: 600;
+  background: var(--sql-dark-blue);
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.button-response {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--sql-text-white);
+  font-size: 16px;
+  font-weight: 500;
+  background: var(--sql-dark-blue);
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  max-width: 400px;
+}
+
+/* SQL Server Landscape Warning */
+.landscape-warning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--sql-darker-blue);
+  color: var(--sql-text-white);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.landscape-warning svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  color: var(--sql-light-blue);
+}
+
+.landscape-warning p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--sql-text-gray);
+}
+
+@media screen and (orientation: landscape) {
+  .start-screen {
+    display: none;
+  }
+  
+  .landscape-warning {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* SQL Server Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+/* SQL Server Responsive Design */
+@media (max-width: 768px) {
+  .welcome-text {
+    font-size: 14px;
+    padding: 20px;
+    height: 70%; /* Increased from 60% to 70% to match the main definition */
+  }
+  
+  .welcome-text h1 {
+    font-size: 20px;
+  }
+  
+  .lyrics-container {
+    height: 30%; /* Decreased from 40% to 30% to match the main definition */
+  }
+  
+
+  
+  .start-button {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 100px;
+  }
+  
+  .button-container {
+    gap: 10px;
+    bottom: 30px;
+  }
+  
+  .lyrics-display {
+    font-size: 12px;
+  }
+  
+  .final-message,
+  .button-response {
+    font-size: 16px;
+    padding: 15px;
+    max-width: 90%;
+  }
+}
+
+/* SQL Server Grid Layout */
+.sql-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+}
+
+.sql-panel {
+  background: var(--sql-dark-blue);
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific styling for Database Query Result panel to reduce gap */
+.sql-panel .sql-panel-header {
+  margin-bottom: 0; /* Remove margin between header and query */
+}
+
+.sql-panel .sql-query {
+  margin-top: 0; /* Remove top margin from query */
+}
+
+.sql-panel-header {
+  font-size: 18px; /* Increased from 16px */
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 5px; /* Reduced from 20px to 5px to minimize gap */
+  padding: 15px 20px; /* Increased from 10px 15px */
+  text-align: left;
+  background: linear-gradient(90deg, #0078d4, #106ebe);
+  border-bottom: 2px solid #0078d4;
+  position: relative;
+}
+
+.sql-panel-header::before {
+  content: '■';
+  margin-right: 8px;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+/* SQL Query Syntax Highlighting */
+.sql-query {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  background: #ffffff;
+  color: #333333;
+  padding: 20px;
+  border-radius: 0;
+  border: 3px solid #0078d4;
+  margin: -5px 0 0 0; /* Negative top margin to move query box up */
+  white-space: pre-line;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.sql-query::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, #0078d4, #106ebe, #0078d4);
+  z-index: -1;
+  border-radius: 0;
+}
+
+
+
+/* SQL Server Connect Dialog */
+.sql-connect-dialog {
+  background: #f0f0f0;
+  border: 1px solid #c0c0c0;
+  border-radius: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 900px; /* Increased from 700px to make it much taller */
+}
+
+.dialog-title-bar {
+  background: linear-gradient(90deg, #0078d4, #106ebe);
+  color: white;
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.title-bar-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.minimize-btn, .maximize-btn, .close-btn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.close-btn:hover {
+  background: #e81123;
+}
+
+.dialog-content {
+  padding: 30px; /* Increased from 20px */
+  background: #f0f0f0; /* Restored original background for song reproduction screen */
+  min-height: 800px; /* Increased from 600px to better utilize the larger dialog */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Changed from space-between to flex-start */
+  gap: 20px; /* Added gap between elements */
+  flex: 1; /* Take remaining space */
+}
+
+/* Specific styling for the initial screen (questions screen) */
+.welcome-text .dialog-content {
+  background: transparent; /* Only transparent for the initial screen */
+}
+
+.main-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 0; /* Remove margin since we're using gap */
+  flex: 0 0 auto; /* Don't grow or shrink */
+}
+
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid #c0c0c0;
+  margin-bottom: 0; /* Remove margin since we're using gap */
+  flex: 0 0 auto; /* Don't grow or shrink */
+}
+
+.tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: #666666;
+  font-size: 14px;
+}
+
+.tab.active {
+  color: #0078d4;
+  border-bottom-color: #0078d4;
+}
+
+.connection-properties {
+  background: white; /* Restored original background for song reproduction screen */
+  padding: 25px; /* Increased from 15px */
+  border: 1px solid #c0c0c0; /* Restored original border for song reproduction screen */
+  flex: 0 0 auto; /* Changed from flex: 1 to flex: 0 0 auto to not take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Changed from space-around to flex-start */
+  min-height: auto; /* Changed from 700px to auto */
+  gap: 15px; /* Added gap between property groups */
+}
+
+/* Specific styling for the initial screen (questions screen) */
+.welcome-text .connection-properties {
+  background: transparent; /* Only transparent for the initial screen */
+  border: none; /* Only no border for the initial screen */
+}
+
+.property-group {
+  margin-bottom: 0; /* Remove margin since we're using gap in parent */
+  flex: 0 0 auto; /* Changed from flex: 1 to flex: 0 0 auto */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Changed from center to flex-start */
+  gap: 10px; /* Space between label and input */
+}
+
+.property-group > label {
+  display: block;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 0; /* Remove margin since we're using gap */
+  font-size: 14px;
+  text-align: center; /* Center the question text */
+}
+
+.section-header {
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0; /* Remove margin since we're using gap */
+  gap: 10px;
+  justify-content: center; /* Center the input field */
+}
+
+.input-group label {
+  min-width: 120px;
+  font-size: 12px;
+  color: #333333;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9); /* Changed to semi-transparent white */
+  border: 1px solid #c0c0c0;
+  padding: 4px 8px;
+  min-width: 150px;
+  position: relative;
+  border-radius: 4px; /* Added border radius for better appearance */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.input-field:hover {
+  background: rgba(255, 255, 255, 1); /* Full white on hover */
+}
+
+.input-field span {
+  font-size: 12px;
+  color: #333333;
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  color: #666666;
+  font-size: 10px;
+}
+
+.spin-box {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.spin-box span {
+  font-size: 8px;
+  color: #666666;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.unit {
+  font-size: 12px;
+  color: #666666;
+  margin-left: 5px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin: 0;
+}
+
+.checkbox-group label {
+  font-size: 12px;
+  color: #333333;
+  margin: 0;
+}
+
+.color-box {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #c0c0c0;
+  background: white;
+  margin-left: 5px;
+}
+
+.select-btn {
+  padding: 2px 8px;
+  font-size: 11px;
+  border: 1px solid #c0c0c0;
+  background: #f0f0f0;
+  color: #666666;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.select-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  background: #f0f0f0;
+  border-top: 1px solid #c0c0c0;
+  flex: 0 0 auto; /* Don't grow or shrink */
+  margin-top: auto; /* Push to bottom */
+}
+
+.connect-btn {
+  background: #0078d4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.cancel-btn, .help-btn, .options-btn {
+  background: #f0f0f0;
+  color: #333333;
+  border: 1px solid #c0c0c0;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.connect-btn:hover {
+  background: #106ebe;
+}
+
+.cancel-btn:hover, .help-btn:hover, .options-btn:hover {
+  background: #e0e0e0;
+}
+
+.sql-query-white {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  background: #ffffff;
+  color: #000000;
+  padding: 25px;
+  border-radius: 8px;
+  margin: 20px auto;
+  white-space: pre-line;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 400px;
+  max-width: 600px;
+}
+
+.sql-query-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.sql-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  min-width: 120px;
+}
+
+.sql-button.accept {
+  background: var(--sql-success-green);
+  color: var(--sql-text-white);
+  border-color: var(--sql-success-green);
+}
+
+.sql-button.accept:hover {
+  background: #0f6b0f;
+  border-color: #0f6b0f;
+}
+
+.sql-button.cancel {
+  background: var(--sql-error-red);
+  color: var(--sql-text-white);
+  border-color: var(--sql-error-red);
+}
+
+.sql-button.cancel:hover {
+  background: #b02a2e;
+  border-color: #b02a2e;
+}
+
+.sql-keyword {
+  color: #0000ff;
+  font-weight: bold;
+}
+
+.sql-operator {
+  color: #000000;
+}
+
+.sql-table {
+  color: #ff6600;
+  font-weight: bold;
+}
+
+.sql-column {
+  color: #800080;
+}
+
+.sql-string {
+  color: #a31515;
+}
+
+.sql-number {
+  color: #000000;
+}
+
+.sql-comment {
+  color: #008000;
+  font-style: italic;
+}
+
+/* SQL Server Status Bar */
+.sql-status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background: var(--sql-dark-blue);
+  border-top: 1px solid var(--sql-border-gray);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  font-size: 12px;
+  color: var(--sql-text-gray);
+  z-index: 50;
+}
+
+/* SQL Server Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sql-darker-blue);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sql-border-gray);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sql-accent-blue);
+}
+
+/* Dropdown styles */
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--sql-dark-blue);
+  border: 1px solid var(--sql-border-gray);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 1000;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-option {
+  padding: 8px 12px;
+  color: var(--sql-text-white);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--sql-border-gray);
+}
+
+.dropdown-option:last-child {
+  border-bottom: none;
+}
+
+.dropdown-option:hover {
+  background: var(--sql-light-blue);
+}
+
+.dropdown-option:active {
+  background: var(--sql-accent-blue);
+}
+
