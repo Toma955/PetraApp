@@ -88,6 +88,7 @@ const StartScreen = ({ onStart }) => {
        }
 
       // Find current lyric based on time
+      // eslint-disable-next-line no-unused-vars
       const currentLyric = lyrics.find((lyric, index) => {
         const nextLyric = lyrics[index + 1];
         return currentTime >= lyric.time && (!nextLyric || currentTime < nextLyric.time);
