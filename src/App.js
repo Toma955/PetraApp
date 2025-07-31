@@ -8,6 +8,7 @@ import audioFile from './PetraKarin.wav';
 
 function App() {
   const [started, setStarted] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [sessionStartTime] = useState(Date.now());
   const [songPlayed, setSongPlayed] = useState(false);
   const [songPlayCount, setSongPlayCount] = useState(0);
