@@ -579,6 +579,10 @@ const StartScreen = ({ onStart }) => {
       {!showSplitButtons && (
         <div className={`welcome-box ${isFlipped ? 'flipped' : ''} ${isSecondFlipped ? 'second-flipped' : ''} ${isThirdFlipped ? 'third-flipped' : ''}`}>
           <div className="welcome-box-inner">
+            <div className="window-controls">
+              <div className="close-button">×</div>
+              <div className="window-title">Connect to Server</div>
+            </div>
                          <div className="welcome-box-front">
                                <h1 className="welcome-text">
                       <div className="dialog-content">
