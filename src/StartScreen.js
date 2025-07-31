@@ -6,7 +6,7 @@ import audioFile from './PetraKarin.wav';
 import lyrics from './lyrics';
 
 const StartScreen = ({ onStart }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFaded, setIsFaded] = useState(false);
   const [isSecondFlipped, setIsSecondFlipped] = useState(false);
   const [isThirdFlipped, setIsThirdFlipped] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -22,6 +22,7 @@ const StartScreen = ({ onStart }) => {
   const [isBlackBackground, setIsBlackBackground] = useState(false);
   const [isInstagramStyle, setIsInstagramStyle] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
+  const [isCancelled, setIsCancelled] = useState(false);
   
   // Force showButtons to true on component mount
   useEffect(() => {
@@ -46,7 +47,8 @@ const StartScreen = ({ onStart }) => {
   };
 
   const handleStartClick = () => {
-    setIsFlipped(true);
+    setIsFaded(true);
+    setCurrentMessage(1);
     setLyricsHistory([]); // Clear lyrics history when starting
     setShowButtons(true); // Reset showButtons
     const buttonContainer = document.querySelector('.button-container');
@@ -197,12 +199,18 @@ const StartScreen = ({ onStart }) => {
         setCurrentMessage(3);
         setDisplayedText(renderMessageContent(3));
       }, 400);
+    } else if (currentMessage === 3 && isSongEnded) {
+      // When song has ended and user clicks button, show da/ne options
+      setShowSplitButtons(true);
+      setShowBackground(true);
+      setCurrentMessage(2); // Go back to message 2 which shows the da/ne options
+      setDisplayedText(renderMessageContent(2));
     }
   };
 
   const handleButtonClick = (isYes) => {
     if (isYes) {
-             setButtonResponse(`Query executed successfully! Hvala ti, javi se na wap ili nastavljamo pricat na instagramu`);
+             setButtonResponse(`--Hvala ti, kad budeš stekla povjerenje javi se, nadao sam se ovom odgovoru`);
       setIsInstagramStyle(true);
       setIsNoButtonInstagram(true);
     } else {
@@ -222,18 +230,26 @@ const StartScreen = ({ onStart }) => {
         }
         window.open(instagramLink, '_blank');
       } else {
-                 setButtonResponse('Query cancelled: Oprosti na smetnji');
-        setIsBlackBackground(true);
+        setIsCancelled(true);
         setShowButtons(false);
+        
+        // Close window after 5 seconds
+        setTimeout(() => {
+          if (typeof window !== 'undefined') {
+            window.close();
+            // Fallback for browsers that don't allow window.close()
+            window.location.href = 'about:blank';
+          }
+        }, 5000);
       }
     }
   };
 
   const handleCopyNumber = () => {
-    navigator.clipboard.writeText(phoneNumber).then(() => {
-             setButtonResponse('Query Result: Broj je kopiran! Možeš ga sada zalijepiti u WhatsApp');
+    navigator.clipboard.writeText('0957211881').then(() => {
+             setButtonResponse('--Broj je kopiran');
     }).catch(err => {
-      setButtonResponse('Greška pri kopiranju broja. Pokušaj ponovno.');
+      setButtonResponse('--Greška pri kopiranju broja. Pokušaj ponovno.');
     });
   };
 
@@ -305,9 +321,9 @@ const StartScreen = ({ onStart }) => {
                       <div className="button-container">
                         <button 
                           className="start-button" 
-                          onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                          onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
                         >
-                          {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                          {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
                         </button>
                       </div>
                     </div>
@@ -315,204 +331,74 @@ const StartScreen = ({ onStart }) => {
                                    case 1:
           return (
             <div className="sql-panel">
-              <div className="sql-panel-header">Database Analysis</div>
+                          <div className="sql-panel-header">Query</div>
               <div className="sql-query">
-                <span className="sql-keyword">CREATE TABLE</span> <span className="sql-table">Petra_Karin</span> <span className="sql-operator">(</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">id</span> <span className="sql-keyword">SERIAL PRIMARY KEY</span><span className="sql-operator">,</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">ime</span> <span className="sql-keyword">VARCHAR</span><span className="sql-operator">(</span><span className="sql-number">50</span><span className="sql-operator">)</span> <span className="sql-keyword">DEFAULT</span> <span className="sql-string">'Petra'</span><span className="sql-operator">,</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">prezime</span> <span className="sql-keyword">VARCHAR</span><span className="sql-operator">(</span><span className="sql-number">50</span><span className="sql-operator">)</span> <span className="sql-keyword">DEFAULT</span> <span className="sql-string">'Karin'</span><span className="sql-operator">,</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">posebna</span> <span className="sql-keyword">BOOLEAN DEFAULT TRUE</span><span className="sql-operator">,</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">zanimljiva_nivo</span> <span className="sql-keyword">INT CHECK</span> <span className="sql-operator">(</span><span className="sql-column">zanimljiva_nivo</span> <span className="sql-keyword">BETWEEN</span> <span className="sql-number">1</span> <span className="sql-keyword">AND</span> <span className="sql-number">10</span><span className="sql-operator">)</span> <span className="sql-keyword">DEFAULT</span> <span className="sql-number">10</span><span className="sql-operator">,</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">hobiji</span> <span className="sql-keyword">TEXT</span><span className="sql-operator">[]</span> <span className="sql-keyword">DEFAULT</span> <span className="sql-keyword">ARRAY</span><span className="sql-operator">[</span><span className="sql-string">'putovanja'</span><span className="sql-operator">,</span> <span className="sql-string">'knjige'</span><span className="sql-operator">,</span> <span className="sql-string">'glazba'</span><span className="sql-operator">],</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">gurman</span> <span className="sql-keyword">BOOLEAN DEFAULT TRUE</span><span className="sql-operator">,</span><br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">opis</span> <span className="sql-keyword">TEXT DEFAULT</span> <span className="sql-string">'Jedinstvena kombinacija šarma, znatiželje i ljubavi prema hrani.'</span><br/>
-                <span className="sql-operator">);</span>
+                <span className="sql-keyword">SELECT</span> <span className="sql-operator">*</span><br/>
+                <span className="sql-keyword">FROM</span> <span className="sql-table">pjesme</span><br/>
+                <span className="sql-keyword">WHERE</span> <span className="sql-column">"Stvoreno za"</span> <span className="sql-operator">=</span> <span className="sql-string">'Petra'</span><br/>
+                &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">naslov</span> <span className="sql-operator">=</span> <span className="sql-string">'Ona stvarna ti'</span><br/>
+                <span className="sql-keyword">LIMIT</span> <span className="sql-number">1</span><span className="sql-operator">;</span>
               </div>
               <div className="button-container">
                 <button 
                   className="start-button" 
-                  onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                  onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                  style={{
+                    background: '#e1e1e1',
+                    color: '#000000',
+                    border: '1px solid #c1c1c1',
+                    borderRadius: '4px',
+                    padding: '8px 16px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontFamily: 'Segoe UI, sans-serif',
+                    transition: 'background-color 0.2s'
+                  }}
                 >
-                  {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                  <i className="fa-solid fa-play" style={{ color: '#00ff00', fontSize: '12px' }}></i>
+                  {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
                 </button>
               </div>
             </div>
           );
-            case 2:
+                        case 2:
         return (
-          <div style={{ 
-            display: 'flex', 
-            width: '100%', 
-            height: '100%', 
-            gap: '10px', 
-            padding: '10px',
-            boxSizing: 'border-box'
-          }}>
-            {/* SQL Panel - Lijeva strana */}
-            <div style={{ 
-              flex: 1, 
-              background: '#0d1117',
-              border: '2px solid #58a6ff',
-              borderRadius: '8px',
-              padding: '15px',
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '400px'
-            }}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px', 
-                color: '#58a6ff', 
-                fontWeight: '600', 
-                marginBottom: '15px', 
-                padding: '10px',
-                background: 'rgba(88, 166, 255, 0.1)',
-                borderRadius: '6px',
-                border: '1px solid #58a6ff'
-              }}>
-                <i className="fa-solid fa-database"></i>
-                <span>SQL Query</span>
+            <div className="sql-panel">
+                          <div className="sql-panel-header">Database Analysis</div>
+              <div className="sql-query">
+                <span className="sql-keyword">SELECT</span> <span className="sql-operator">*</span><br/>
+                <span className="sql-keyword">FROM</span> <span className="sql-table">pjesme</span><br/>
+                <span className="sql-keyword">WHERE</span> <span className="sql-column">"Stvoreno za"</span> <span className="sql-operator">=</span> <span className="sql-string">'Petra'</span><br/>
+                &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">naslov</span> <span className="sql-operator">=</span> <span className="sql-string">'Ona stvarna ti'</span><br/>
+                <span className="sql-keyword">LIMIT</span> <span className="sql-number">1</span><span className="sql-operator">;</span>
               </div>
-              <div style={{ 
-                flex: 1,
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid #30363d',
-                borderRadius: '6px',
-                padding: '12px',
-                fontFamily: 'monospace',
-                fontSize: '13px',
-                lineHeight: '1.5',
-                color: '#c9d1d9'
-              }}>
-                <span style={{ color: '#ff7b72' }}>SELECT</span> <span style={{ color: '#d2a8ff' }}>*</span><br/>
-                <span style={{ color: '#ff7b72' }}>FROM</span> <span style={{ color: '#79c0ff' }}>romantic_messages</span><br/>
-                <span style={{ color: '#ff7b72' }}>WHERE</span> <span style={{ color: '#ffa657' }}>recipient</span> <span style={{ color: '#d2a8ff' }}>=</span> <span style={{ color: '#a5d6ff' }}>'Petra'</span><br/>
-                &nbsp;&nbsp;<span style={{ color: '#ff7b72' }}>AND</span> <span style={{ color: '#ffa657' }}>type</span> <span style={{ color: '#d2a8ff' }}>=</span> <span style={{ color: '#a5d6ff' }}>'audio'</span><br/>
-                <span style={{ color: '#ff7b72' }}>ORDER BY</span> <span style={{ color: '#ffa657' }}>timestamp</span> <span style={{ color: '#ff7b72' }}>DESC</span><span style={{ color: '#d2a8ff' }}>;</span>
-              </div>
-              
-              <div style={{ 
-                marginTop: '15px',
-                padding: '12px',
-                background: 'rgba(88, 166, 255, 0.1)',
-                borderRadius: '6px',
-                border: '1px solid #58a6ff',
-                textAlign: 'center',
-                color: '#c9d1d9',
-                fontSize: '14px'
-              }}>
-                <p>Pogledaj koliko si <span style={{ color: '#ff7b72', fontWeight: 'bold' }}>savršena</span>,</p>
-                <p>sve što želim je vidjeti te <span style={{ color: '#ff7b72', fontWeight: 'bold' }}>uživo</span>...</p>
-                <p>...ako si za...</p>
+              <div className="button-container">
+                <button 
+                  className="start-button" 
+                  onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                >
+                  {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                </button>
               </div>
             </div>
-            
-            {/* Lyrics Panel - Desna strana */}
-            <div style={{ 
-              flex: 1,
-              background: '#0d1117',
-              border: '2px solid #58a6ff',
-              borderRadius: '8px',
-              padding: '15px',
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '400px'
-            }}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px', 
-                color: '#58a6ff', 
-                fontWeight: '600', 
-                marginBottom: '15px', 
-                padding: '10px',
-                background: 'rgba(88, 166, 255, 0.1)',
-                borderRadius: '6px',
-                border: '1px solid #58a6ff'
-              }}>
-                <i className="fa-solid fa-headphones"></i>
-                <span>Live Lyrics</span>
-              </div>
-              
-              <div style={{ 
-                flex: 1,
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid #30363d',
-                borderRadius: '6px',
-                padding: '12px',
-                overflowY: 'auto',
-                maxHeight: '250px'
-              }}>
-                <div style={{ 
-                  textAlign: 'center',
-                  color: '#8b949e',
-                  padding: '30px 15px'
-                }}>
-                  <i className="fa-solid fa-music" style={{ fontSize: '20px', marginBottom: '8px', display: 'block' }}></i>
-                  <p style={{ fontSize: '13px', margin: '5px 0' }}>Kliknite "Execute Query" da počnete reproducirati pjesmu</p>
-                  <p style={{ fontSize: '12px', margin: '5px 0' }}>Lyrics će se prikazati ovdje...</p>
-                </div>
-              </div>
-              
-              <div style={{ 
-                marginTop: '15px',
-                textAlign: 'center'
-              }}>
-                <div className="button-container">
-                  <button 
-                    className="start-button" 
-                    onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
-                  >
-                    {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
-                  </button>
-                </div>
-                
-                {isPlaying && (
-                  <div style={{ 
-                    marginTop: '10px',
-                    textAlign: 'center'
-                  }}>
-                    <div style={{ 
-                      width: '100%',
-                      height: '3px',
-                      background: '#30363d',
-                      borderRadius: '2px',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{ 
-                        height: '100%',
-                        background: '#58a6ff',
-                        width: '30%',
-                        animation: 'progress 2s ease-in-out infinite'
-                      }}></div>
-                    </div>
-                    <span style={{ 
-                      fontSize: '11px',
-                      color: '#8b949e',
-                      marginTop: '3px',
-                      display: 'block'
-                    }}>Executing...</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        );
+          );
             case 3:
         return (
           <div className="sql-panel">
             <div className="sql-panel-header">Final Query Result</div>
             <div className="welcome-text">
               <p>Svi naljepši <span className="highlight">ljubavni filmovi</span> i pjesme su napisane tek nakon što si se rodila...</p>
-              <p>Ja ne vjerujem u <span className="highlight">slučajnost</span>...</p>
             </div>
             <div className="button-container">
               <button 
                 className="start-button" 
-                onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                onClick={handleNextClick}
               >
-                {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                Continue
               </button>
             </div>
           </div>
@@ -523,14 +409,14 @@ const StartScreen = ({ onStart }) => {
   };
 
   useEffect(() => {
-    if (isFlipped) {
+    if (isFaded) {
       const audio = audioRef.current;
       audio.addEventListener('timeupdate', handleTimeUpdate);
       return () => {
         audio.removeEventListener('timeupdate', handleTimeUpdate);
       };
     }
-  }, [isFlipped]);
+  }, [isFaded]);
 
   useEffect(() => {
     setDisplayedText(renderMessageContent(currentMessage));
@@ -556,10 +442,42 @@ const StartScreen = ({ onStart }) => {
   return (
     <div className="start-screen">
       <div className="icons-container">
-        <div className="header-title">
-          <i className="fa-solid fa-plug"></i>
-          <span>Connecting...</span>
-        </div>
+        {isFaded && currentMessage >= 1 && !showSplitButtons ? (
+          <div className="header-buttons">
+            <button 
+              className={`header-button ${currentMessage === 1 ? 'active' : ''}`}
+              onClick={() => handleHeaderButtonClick('query')}
+            >
+              <i className="fa-solid fa-code"></i>
+              <span>Query</span>
+            </button>
+            <button 
+              className={`header-button ${currentMessage === 2 ? 'active' : ''}`}
+              onClick={() => handleHeaderButtonClick('database')}
+            >
+              <i className="fa-solid fa-database"></i>
+              <span>Database</span>
+            </button>
+            <button 
+              className={`header-button ${currentMessage === 3 ? 'active' : ''}`}
+              onClick={() => handleHeaderButtonClick('results')}
+            >
+              <i className="fa-solid fa-chart-line"></i>
+              <span>Results</span>
+            </button>
+          </div>
+        ) : showSplitButtons ? (
+          <div className="header-title">
+            <span style={{ color: '#0078d4', fontWeight: 'bold', fontSize: '16px' }}>
+              Pitanje zbog koga ovo sve postoji
+            </span>
+          </div>
+        ) : (
+          <div className="header-title">
+            <i className="fa-solid fa-plug"></i>
+            <span>Connecting...</span>
+          </div>
+        )}
       </div>
       <div className="landscape-warning">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
@@ -577,124 +495,195 @@ const StartScreen = ({ onStart }) => {
         />
       )}
       {!showSplitButtons && (
-        <div className={`welcome-box ${isFlipped ? 'flipped' : ''} ${isSecondFlipped ? 'second-flipped' : ''} ${isThirdFlipped ? 'third-flipped' : ''}`}>
+        <div className={`welcome-box ${isFaded ? 'faded' : ''} ${isSecondFlipped ? 'second-flipped' : ''} ${isThirdFlipped ? 'third-flipped' : ''}`}>
           <div className="welcome-box-inner">
-            <div className="window-controls">
-              <div className="close-button">×</div>
-              <div className="window-title">Connect to Server</div>
+            {!isFaded && (
+              <div className="window-controls">
+                <div className="close-button">×</div>
+                <div className="window-title">Connect to Server</div>
+              </div>
+            )}
+            <div className="welcome-box-front">
+              <h1 className="welcome-text">
+                <div className="dialog-content">
+                  <div className="main-title">SQL Server Petra Edition</div>
+                  <div className="microsoft-orange-bar"></div>
+                  <div className="connection-properties">
+                    <div className="property-group">
+                      <div className="input-group">
+                        <label>Jesi li ikad dobila webapp?</label>
+                        <div className="input-field" onClick={() => handleDropdownToggle(1)}>
+                          <span>{getDisplayText(webappAnswer)}</span>
+                          <span className="dropdown-arrow">▼</span>
+                        </div>
+                        {showDropdown1 && (
+                          <div className="dropdown-options">
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Da')}>Da</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Ne')}>Ne</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Možda')}>Možda</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Sigurno')}>Sigurno</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Nikad')}>Nikad</div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="input-group">
+                        <label>Jesi li ikad dobila pjesmu?</label>
+                        <div className="input-field" onClick={() => handleDropdownToggle(2)}>
+                          <span>{getDisplayText(songAnswer)}</span>
+                          <span className="dropdown-arrow">▼</span>
+                        </div>
+                        {showDropdown2 && (
+                          <div className="dropdown-options">
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Da')}>Da</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Ne')}>Ne</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Možda')}>Možda</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Sigurno')}>Sigurno</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Nikad')}>Nikad</div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="input-group">
+                        <label>Imaš li slušalice?</label>
+                        <div className="input-field" onClick={() => handleDropdownToggle(3)}>
+                          <span>{getDisplayText(headphonesAnswer)}</span>
+                          <span className="dropdown-arrow">▼</span>
+                        </div>
+                        {showDropdown3 && (
+                          <div className="dropdown-options">
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Da')}>Da</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Ne')}>Ne</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Možda')}>Možda</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Sigurno')}>Sigurno</div>
+                            <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Nikad')}>Nikad</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {!isFaded && (
+                  <div className="dialog-buttons">
+                    <button 
+                      className="start-button" 
+                      onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                    >
+                      {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                    </button>
+                  </div>
+                )}
+              </h1>
             </div>
-                         <div className="welcome-box-front">
-                               <h1 className="welcome-text">
-                      <div className="dialog-content">
-                        <div className="main-title">SQL Server Petra Edition</div>
-                        <div className="microsoft-orange-bar"></div>
-                                               <div className="connection-properties">
-                                                    <div className="property-group">
-                           <div className="input-group">
-                             <label>Jesi li ikad dobila webapp?</label>
-                             <div className="input-field" onClick={() => handleDropdownToggle(1)}>
-                               <span>{getDisplayText(webappAnswer)}</span>
-                               <span className="dropdown-arrow">▼</span>
-                             </div>
-                             {showDropdown1 && (
-                               <div className="dropdown-options">
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Da')}>Da</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Ne')}>Ne</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Možda')}>Možda</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Sigurno')}>Sigurno</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('webapp', 'Nikad')}>Nikad</div>
-                               </div>
-                             )}
-                           </div>
-                           <div className="input-group">
-                             <label>Jesi li ikad dobila pjesmu?</label>
-                             <div className="input-field" onClick={() => handleDropdownToggle(2)}>
-                               <span>{getDisplayText(songAnswer)}</span>
-                               <span className="dropdown-arrow">▼</span>
-                             </div>
-                             {showDropdown2 && (
-                               <div className="dropdown-options">
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Da')}>Da</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Ne')}>Ne</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Možda')}>Možda</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Sigurno')}>Sigurno</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('song', 'Nikad')}>Nikad</div>
-                               </div>
-                             )}
-                           </div>
-                           <div className="input-group">
-                             <label>Imaš li slušalice?</label>
-                             <div className="input-field" onClick={() => handleDropdownToggle(3)}>
-                               <span>{getDisplayText(headphonesAnswer)}</span>
-                               <span className="dropdown-arrow">▼</span>
-                             </div>
-                             {showDropdown3 && (
-                               <div className="dropdown-options">
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Da')}>Da</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Ne')}>Ne</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Možda')}>Možda</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Sigurno')}>Sigurno</div>
-                                 <div className="dropdown-option" onClick={() => handleAnswerSelect('headphones', 'Nikad')}>Nikad</div>
-                               </div>
-                             )}
-                           </div>
-                                                   </div>
-                                                </div>
-                      </div>
-                      <div className="dialog-buttons">
-                        <button 
-                          className="start-button" 
-                          onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
-                        >
-                          {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
-                        </button>
-                      </div>
-                </h1>
-             </div>
-                         <div className="welcome-box-back">
-               <div className="welcome-text-overlay">
-                 {!isTransitioning && displayedText}
-                 {lyricsHistory.length > 0 && !isSongEnded && (
-                   <div className="lyrics-container">
-                     <div className="lyrics-display">
-                       {lyricsHistory.map((lyric, index) => (
-                         <div key={index} className="lyrics-line">
-                           <div className="lyrics-time-container">
-                             <div className="lyrics-time">[{formatTime(lyric.time)}]</div>
-                           </div>
-                           <div className="lyrics-text">{lyric.text}</div>
-                         </div>
-                       ))}
-                     </div>
-                   </div>
-                 )}
-               </div>
-             </div>
+            <div className="welcome-box-back">
+              <div className="welcome-text-overlay">
+                {!isTransitioning && displayedText}
+                {lyricsHistory.length > 0 && !isSongEnded && (
+                  <div className="lyrics-container">
+                    <div className="lyrics-display">
+                      {lyricsHistory.map((lyric, index) => (
+                        <div key={index} className="lyrics-line">
+                          <div className="lyrics-time-container">
+                            <div className="lyrics-time">[{formatTime(lyric.time)}]</div>
+                          </div>
+                          <div className="lyrics-text">{lyric.text}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
 
                                                        {showSplitButtons && !buttonResponse && (
            <div className="final-message">
-             <div className="sql-query-white">
-               <span className="sql-comment">-- Query za pronalaženje najzanimljivije osobe</span><br/>
-               <span className="sql-keyword">SELECT</span> <span className="sql-operator">*</span><br/>
-               <span className="sql-keyword">FROM</span> <span className="sql-table">Najzanimljivija_osoba</span><br/>
-               <span className="sql-keyword">WHERE</span> <span className="sql-column">ime</span> <span className="sql-operator">=</span> <span className="sql-string">'Petra'</span><br/>
-               &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">status</span> <span className="sql-operator">=</span> <span className="sql-string">'Sloboda'</span><br/>
-               &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-keyword">EXISTS</span> <span className="sql-operator">(</span><br/>
-               &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">SELECT</span> <span className="sql-number">1</span><br/>
-               &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">FROM</span> <span className="sql-table">kava</span><br/>
-               &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">WHERE</span> <span className="sql-column">lokacija</span> <span className="sql-operator">=</span> <span className="sql-string">'gdje god poželiš'</span><br/>
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">vrijeme</span> <span className="sql-operator">=</span> <span className="sql-string">'kad god poželiš'</span><br/>
-               &nbsp;&nbsp;<span className="sql-operator">)</span><span className="sql-operator">;</span>
-             </div>
+                             <div className="sql-query-white">
+                  {isCancelled ? (
+                    <span className="sql-comment">--Oprosti na smetnji</span>
+                  ) : (
+                    <>
+                      <span className="sql-comment">-- sam te htio pitat prvio dan kad sam te vidio</span><br/>
+                      <span className="sql-keyword">SELECT</span> <span className="sql-operator">*</span><br/>
+                      <span className="sql-keyword">FROM</span> <span className="sql-table">Najzanimljivija_osoba</span><br/>
+                      <span className="sql-keyword">WHERE</span> <span className="sql-column">ime</span> <span className="sql-operator">=</span> <span className="sql-string">'Petra'</span><br/>
+                      &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">status</span> <span className="sql-operator">=</span> <span className="sql-string">'Sloboda'</span><br/>
+                      &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-keyword">EXISTS</span> <span className="sql-operator">(</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">SELECT</span> <span className="sql-number">1</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">FROM</span> <span className="sql-table">kava</span><br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">WHERE</span> <span className="sql-column">lokacija</span> <span className="sql-operator">=</span> <span className="sql-string">'gdje god poželiš'</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">vrijeme</span> <span className="sql-operator">=</span> <span className="sql-string">'kad god poželiš'</span><br/>
+                      &nbsp;&nbsp;<span className="sql-operator">)</span><span className="sql-operator">;</span>
+                    </>
+                  )}
+                </div>
+           </div>
+         )}
+
+         {showSplitButtons && !buttonResponse && (
+           <div className="button-container" style={{ 
+             position: 'fixed',
+             bottom: '30px',
+             left: '0',
+             right: '0',
+             display: 'flex',
+             justifyContent: 'center',
+             gap: '15px',
+             zIndex: '10',
+             padding: '0 20px'
+           }}>
+             <button 
+               className="start-button" 
+               onClick={() => handleButtonClick(true)}
+               style={{
+                 background: '#107c10',
+                 color: '#ffffff',
+                 border: '1px solid #107c10',
+                 marginRight: '10px'
+               }}
+             >
+               Execute Query
+             </button>
+             <button 
+               className="start-button" 
+               onClick={() => handleButtonClick(false)}
+               style={{
+                 background: '#d13438',
+                 color: '#ffffff',
+                 border: '1px solid #d13438'
+               }}
+             >
+               Cancel Query
+             </button>
            </div>
          )}
 
              {buttonResponse && (
          <div className="button-response">
            {buttonResponse}
+           {buttonResponse.includes('Query executed successfully') && (
+             <div style={{
+               marginTop: '20px',
+               textAlign: 'center'
+             }}>
+               <button
+                 className="start-button"
+                 onClick={handleCopyNumber}
+                 style={{
+                   background: '#0078d4',
+                   color: '#ffffff',
+                   border: '1px solid #0078d4',
+                   padding: '10px 20px',
+                   borderRadius: '4px',
+                   cursor: 'pointer',
+                   fontSize: '14px',
+                   fontWeight: '500'
+                 }}
+                                >
+                   0957211881
+                 </button>
+             </div>
+           )}
          </div>
        )}
 
@@ -704,7 +693,45 @@ const StartScreen = ({ onStart }) => {
       
       {/* SQL Server Status Bar */}
       <div className="sql-status-bar">
-        <span>{isFlipped ? (isPlaying ? 'Executing Query...' : (isSongEnded ? 'Query Completed' : 'Ready to Execute')) : 'Ready'}</span>
+        <span>{isFaded ? (isPlaying ? 'Executing Query...' : (isSongEnded ? 'Query Completed' : 'Ready to Execute')) : 'Ready'}</span>
+        {isFaded && isPlaying && (
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '10px',
+            marginLeft: 'auto'
+          }}>
+            <div 
+              style={{ 
+                width: '100px',
+                height: '4px',
+                background: '#30363d',
+                borderRadius: '2px',
+                overflow: 'hidden',
+                cursor: 'pointer'
+              }}
+              onClick={(e) => {
+                if (audioRef.current) {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const clickX = e.clientX - rect.left;
+                  const percentage = clickX / rect.width;
+                  const newTime = percentage * audioRef.current.duration;
+                  audioRef.current.currentTime = newTime;
+                }
+              }}
+            >
+              <div style={{ 
+                height: '100%',
+                background: '#58a6ff',
+                width: `${audioRef.current ? (audioRef.current.currentTime / audioRef.current.duration) * 100 : 0}%`,
+                transition: 'width 0.1s ease-out'
+              }}></div>
+            </div>
+            <span style={{ fontSize: '11px', color: '#8b949e' }}>
+              {audioRef.current ? `${Math.floor(audioRef.current.currentTime)}s / ${Math.floor(audioRef.current.duration)}s` : '0s / 0s'}
+            </span>
+          </div>
+        )}
         <span style={{ marginLeft: 'auto' }}>Server Status</span>
       </div>
     </div>
