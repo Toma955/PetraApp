@@ -420,7 +420,7 @@ const StartScreen = ({ onStart }) => {
     setDisplayedText(renderMessageContent(currentMessage));
     // Reset showButtons when message changes
     setShowButtons(true);
-  }, [currentMessage]);
+  }, [currentMessage, renderMessageContent]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
