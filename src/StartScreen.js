@@ -1,5 +1,5 @@
 // src/StartScreen.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './StartScreen.css';
 import backgroundImage from './PetraKarin.JPG';
 import audioFile from './PetraKarin.wav';
@@ -10,7 +10,6 @@ const StartScreen = ({ onStart }) => {
   const [isSecondFlipped, setIsSecondFlipped] = useState(false);
   const [isThirdFlipped, setIsThirdFlipped] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentLyric, setCurrentLyric] = useState('');
   const [lyricsHistory, setLyricsHistory] = useState([]);
   const [isSongEnded, setIsSongEnded] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
@@ -19,15 +18,8 @@ const StartScreen = ({ onStart }) => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayedText, setDisplayedText] = useState('');
   const [buttonResponse, setButtonResponse] = useState('');
-  const [isBlackBackground, setIsBlackBackground] = useState(false);
-  const [isInstagramStyle, setIsInstagramStyle] = useState(false);
-  const [showButtons, setShowButtons] = useState(true);
   const [isCancelled, setIsCancelled] = useState(false);
   
-  // Force showButtons to true on component mount
-  useEffect(() => {
-    setShowButtons(true);
-  }, []);
   const [isNoButtonInstagram, setIsNoButtonInstagram] = useState(false);
   const [webappAnswer, setWebappAnswer] = useState('');
   const [songAnswer, setSongAnswer] = useState('');
@@ -35,7 +27,6 @@ const StartScreen = ({ onStart }) => {
   const [showDropdown1, setShowDropdown1] = useState(false);
   const [showDropdown2, setShowDropdown2] = useState(false);
   const [showDropdown3, setShowDropdown3] = useState(false);
-  const phoneNumber = '0955709282';
   const instagramLink = 'https://www.instagram.com/_petrakarin/';
   const audioRef = useRef(new Audio(audioFile));
 
@@ -49,7 +40,6 @@ const StartScreen = ({ onStart }) => {
     setIsFaded(true);
     setCurrentMessage(1);
     setLyricsHistory([]); // Clear lyrics history when starting
-    setShowButtons(true); // Reset showButtons
     const buttonContainer = document.querySelector('.button-container');
     if (buttonContainer) {
       buttonContainer.classList.add('clicked');
@@ -104,7 +94,6 @@ const StartScreen = ({ onStart }) => {
       });
       
       if (currentLyric) {
-        setCurrentLyric(currentLyric.text);
         // Add to history if it's a new lyric
         setLyricsHistory(prev => {
           const lastLyric = prev[prev.length - 1];
@@ -148,7 +137,8 @@ const StartScreen = ({ onStart }) => {
 
 
 
-  const handleNextClick = () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleNextClick = useCallback(() => {
     if (currentMessage === 0) {
       setCurrentMessage(1);
       setDisplayedText(renderMessageContent(1));
@@ -204,12 +194,12 @@ const StartScreen = ({ onStart }) => {
       setCurrentMessage(2); // Go back to message 2 which shows the da/ne options
       setDisplayedText(renderMessageContent(2));
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentMessage, isSongEnded]);
 
   const handleButtonClick = (isYes) => {
     if (isYes) {
              setButtonResponse(`--Hvala ti, kad budeš stekla povjerenje javi se, nadao sam se ovom odgovoru`);
-      setIsInstagramStyle(true);
       setIsNoButtonInstagram(true);
     } else {
       if (isNoButtonInstagram) {
@@ -229,7 +219,6 @@ const StartScreen = ({ onStart }) => {
         window.open(instagramLink, '_blank');
       } else {
         setIsCancelled(true);
-        setShowButtons(false);
         
         // Close window after 5 seconds
         setTimeout(() => {
@@ -303,7 +292,7 @@ const StartScreen = ({ onStart }) => {
     return answer || 'Odaberi odgovor...';
   };
 
-    const renderMessageContent = (messageType) => {
+    const renderMessageContent = useCallback((messageType) => {
     switch(messageType) {
                                                           case 0:
                   return (
@@ -404,7 +393,7 @@ const StartScreen = ({ onStart }) => {
       default:
         return null;
     }
-  };
+  }, [handleNextClick, isFaded, isPlaying, isSongEnded]);
 
   useEffect(() => {
     if (isFaded) {
@@ -418,8 +407,6 @@ const StartScreen = ({ onStart }) => {
 
   useEffect(() => {
     setDisplayedText(renderMessageContent(currentMessage));
-    // Reset showButtons when message changes
-    setShowButtons(true);
   }, [currentMessage, renderMessageContent]);
 
   useEffect(() => {
@@ -487,8 +474,8 @@ const StartScreen = ({ onStart }) => {
         <div 
           className="background-image" 
           style={{ 
-            backgroundImage: isBlackBackground ? 'none' : `url(${backgroundImage})`,
-            backgroundColor: isBlackBackground ? 'black' : 'transparent'
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundColor: 'transparent'
           }} 
         />
       )}
