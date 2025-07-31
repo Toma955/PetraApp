@@ -22,6 +22,11 @@ const StartScreen = ({ onStart }) => {
   const [isBlackBackground, setIsBlackBackground] = useState(false);
   const [isInstagramStyle, setIsInstagramStyle] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
+  
+  // Force showButtons to true on component mount
+  useEffect(() => {
+    setShowButtons(true);
+  }, []);
   const [isNoButtonInstagram, setIsNoButtonInstagram] = useState(false);
   const [webappAnswer, setWebappAnswer] = useState('');
   const [songAnswer, setSongAnswer] = useState('');
@@ -29,6 +34,7 @@ const StartScreen = ({ onStart }) => {
   const [showDropdown1, setShowDropdown1] = useState(false);
   const [showDropdown2, setShowDropdown2] = useState(false);
   const [showDropdown3, setShowDropdown3] = useState(false);
+  const [isPhaseTwo, setIsPhaseTwo] = useState(false);
   const phoneNumber = '0955709282';
   const instagramLink = 'https://www.instagram.com/_petrakarin/';
   const audioRef = useRef(new Audio(audioFile));
@@ -42,6 +48,7 @@ const StartScreen = ({ onStart }) => {
   const handleStartClick = () => {
     setIsFlipped(true);
     setLyricsHistory([]); // Clear lyrics history when starting
+    setShowButtons(true); // Reset showButtons
     const buttonContainer = document.querySelector('.button-container');
     if (buttonContainer) {
       buttonContainer.classList.add('clicked');
@@ -84,9 +91,9 @@ const StartScreen = ({ onStart }) => {
          
          
 
-                   // Change text after song ends
+                   // Change text after song ends - prebaci na fazu 3
           setTimeout(() => {
-            setCurrentMessage(1);
+            setCurrentMessage(3);
           }, 2000);
        }
 
@@ -259,13 +266,32 @@ const StartScreen = ({ onStart }) => {
     }
   };
 
+  const handleHeaderButtonClick = (buttonType) => {
+    switch(buttonType) {
+      case 'query':
+        setCurrentMessage(2);
+        setDisplayedText(renderMessageContent(2));
+        break;
+      case 'tables':
+        setCurrentMessage(2);
+        setDisplayedText(renderMessageContent(2));
+        break;
+      case 'results':
+        setCurrentMessage(3);
+        setDisplayedText(renderMessageContent(3));
+        break;
+      default:
+        break;
+    }
+  };
+
   const getDisplayText = (answer) => {
     return answer || 'Odaberi odgovor...';
   };
 
     const renderMessageContent = (messageType) => {
     switch(messageType) {
-                             case 0:
+                                                          case 0:
                   return (
                     <div className="sql-panel">
                       <div className="sql-panel-header">Database Query Result</div>
@@ -275,6 +301,14 @@ const StartScreen = ({ onStart }) => {
                         <span className="sql-keyword">WHERE</span> <span className="sql-column">"Stvoreno za"</span> <span className="sql-operator">=</span> <span className="sql-string">'Petra'</span><br/>
                         &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">naslov</span> <span className="sql-operator">=</span> <span className="sql-string">'Ona stvarna ti'</span><br/>
                         <span className="sql-keyword">LIMIT</span> <span className="sql-number">1</span><span className="sql-operator">;</span>
+                      </div>
+                      <div className="button-container">
+                        <button 
+                          className="start-button" 
+                          onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                        >
+                          {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                        </button>
                       </div>
                     </div>
                   );
@@ -294,16 +328,174 @@ const StartScreen = ({ onStart }) => {
                 &nbsp;&nbsp;&nbsp;&nbsp;<span className="sql-column">opis</span> <span className="sql-keyword">TEXT DEFAULT</span> <span className="sql-string">'Jedinstvena kombinacija šarma, znatiželje i ljubavi prema hrani.'</span><br/>
                 <span className="sql-operator">);</span>
               </div>
+              <div className="button-container">
+                <button 
+                  className="start-button" 
+                  onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                >
+                  {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                </button>
+              </div>
             </div>
           );
             case 2:
         return (
-          <div className="sql-panel">
-            <div className="sql-panel-header">Query Parameters</div>
-            <div className="sql-query" style={{textAlign: 'center', maxWidth: '90%', margin: '0 auto', padding: '20px'}}>
-              <p>Pogledaj koliko si <span className="highlight">savršena</span>,</p>
-              <p>sve što želim je vidjeti te <span className="highlight">uživo</span>...</p>
-              <p>...ako si za...</p>
+          <div style={{ 
+            display: 'flex', 
+            width: '100%', 
+            height: '100%', 
+            gap: '10px', 
+            padding: '10px',
+            boxSizing: 'border-box'
+          }}>
+            {/* SQL Panel - Lijeva strana */}
+            <div style={{ 
+              flex: 1, 
+              background: '#0d1117',
+              border: '2px solid #58a6ff',
+              borderRadius: '8px',
+              padding: '15px',
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '400px'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px', 
+                color: '#58a6ff', 
+                fontWeight: '600', 
+                marginBottom: '15px', 
+                padding: '10px',
+                background: 'rgba(88, 166, 255, 0.1)',
+                borderRadius: '6px',
+                border: '1px solid #58a6ff'
+              }}>
+                <i className="fa-solid fa-database"></i>
+                <span>SQL Query</span>
+              </div>
+              <div style={{ 
+                flex: 1,
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid #30363d',
+                borderRadius: '6px',
+                padding: '12px',
+                fontFamily: 'monospace',
+                fontSize: '13px',
+                lineHeight: '1.5',
+                color: '#c9d1d9'
+              }}>
+                <span style={{ color: '#ff7b72' }}>SELECT</span> <span style={{ color: '#d2a8ff' }}>*</span><br/>
+                <span style={{ color: '#ff7b72' }}>FROM</span> <span style={{ color: '#79c0ff' }}>romantic_messages</span><br/>
+                <span style={{ color: '#ff7b72' }}>WHERE</span> <span style={{ color: '#ffa657' }}>recipient</span> <span style={{ color: '#d2a8ff' }}>=</span> <span style={{ color: '#a5d6ff' }}>'Petra'</span><br/>
+                &nbsp;&nbsp;<span style={{ color: '#ff7b72' }}>AND</span> <span style={{ color: '#ffa657' }}>type</span> <span style={{ color: '#d2a8ff' }}>=</span> <span style={{ color: '#a5d6ff' }}>'audio'</span><br/>
+                <span style={{ color: '#ff7b72' }}>ORDER BY</span> <span style={{ color: '#ffa657' }}>timestamp</span> <span style={{ color: '#ff7b72' }}>DESC</span><span style={{ color: '#d2a8ff' }}>;</span>
+              </div>
+              
+              <div style={{ 
+                marginTop: '15px',
+                padding: '12px',
+                background: 'rgba(88, 166, 255, 0.1)',
+                borderRadius: '6px',
+                border: '1px solid #58a6ff',
+                textAlign: 'center',
+                color: '#c9d1d9',
+                fontSize: '14px'
+              }}>
+                <p>Pogledaj koliko si <span style={{ color: '#ff7b72', fontWeight: 'bold' }}>savršena</span>,</p>
+                <p>sve što želim je vidjeti te <span style={{ color: '#ff7b72', fontWeight: 'bold' }}>uživo</span>...</p>
+                <p>...ako si za...</p>
+              </div>
+            </div>
+            
+            {/* Lyrics Panel - Desna strana */}
+            <div style={{ 
+              flex: 1,
+              background: '#0d1117',
+              border: '2px solid #58a6ff',
+              borderRadius: '8px',
+              padding: '15px',
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '400px'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px', 
+                color: '#58a6ff', 
+                fontWeight: '600', 
+                marginBottom: '15px', 
+                padding: '10px',
+                background: 'rgba(88, 166, 255, 0.1)',
+                borderRadius: '6px',
+                border: '1px solid #58a6ff'
+              }}>
+                <i className="fa-solid fa-headphones"></i>
+                <span>Live Lyrics</span>
+              </div>
+              
+              <div style={{ 
+                flex: 1,
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid #30363d',
+                borderRadius: '6px',
+                padding: '12px',
+                overflowY: 'auto',
+                maxHeight: '250px'
+              }}>
+                <div style={{ 
+                  textAlign: 'center',
+                  color: '#8b949e',
+                  padding: '30px 15px'
+                }}>
+                  <i className="fa-solid fa-music" style={{ fontSize: '20px', marginBottom: '8px', display: 'block' }}></i>
+                  <p style={{ fontSize: '13px', margin: '5px 0' }}>Kliknite "Execute Query" da počnete reproducirati pjesmu</p>
+                  <p style={{ fontSize: '12px', margin: '5px 0' }}>Lyrics će se prikazati ovdje...</p>
+                </div>
+              </div>
+              
+              <div style={{ 
+                marginTop: '15px',
+                textAlign: 'center'
+              }}>
+                <div className="button-container">
+                  <button 
+                    className="start-button" 
+                    onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                  >
+                    {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                  </button>
+                </div>
+                
+                {isPlaying && (
+                  <div style={{ 
+                    marginTop: '10px',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{ 
+                      width: '100%',
+                      height: '3px',
+                      background: '#30363d',
+                      borderRadius: '2px',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{ 
+                        height: '100%',
+                        background: '#58a6ff',
+                        width: '30%',
+                        animation: 'progress 2s ease-in-out infinite'
+                      }}></div>
+                    </div>
+                    <span style={{ 
+                      fontSize: '11px',
+                      color: '#8b949e',
+                      marginTop: '3px',
+                      display: 'block'
+                    }}>Executing...</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );
@@ -314,6 +506,14 @@ const StartScreen = ({ onStart }) => {
             <div className="welcome-text">
               <p>Svi naljepši <span className="highlight">ljubavni filmovi</span> i pjesme su napisane tek nakon što si se rodila...</p>
               <p>Ja ne vjerujem u <span className="highlight">slučajnost</span>...</p>
+            </div>
+            <div className="button-container">
+              <button 
+                className="start-button" 
+                onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+              >
+                {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+              </button>
             </div>
           </div>
         );
@@ -334,6 +534,8 @@ const StartScreen = ({ onStart }) => {
 
   useEffect(() => {
     setDisplayedText(renderMessageContent(currentMessage));
+    // Reset showButtons when message changes
+    setShowButtons(true);
   }, [currentMessage]);
 
   useEffect(() => {
@@ -354,21 +556,9 @@ const StartScreen = ({ onStart }) => {
   return (
     <div className="start-screen">
       <div className="icons-container">
-        <div className="icon-item">
-          <i className="fa-solid fa-database"></i>
-          <span>Database</span>
-        </div>
-        <div className="icon-item">
-          <i className="fa-solid fa-table"></i>
-          <span>Tables</span>
-        </div>
-        <div className="icon-item">
-          <i className="fa-solid fa-code"></i>
-          <span>Query</span>
-        </div>
-        <div className="icon-item">
-          <i className="fa-solid fa-chart-line"></i>
-          <span>Results</span>
+        <div className="header-title">
+          <i className="fa-solid fa-plug"></i>
+          <span>Connecting...</span>
         </div>
       </div>
       <div className="landscape-warning">
@@ -393,6 +583,7 @@ const StartScreen = ({ onStart }) => {
                                <h1 className="welcome-text">
                       <div className="dialog-content">
                         <div className="main-title">SQL Server Petra Edition</div>
+                        <div className="microsoft-orange-bar"></div>
                                                <div className="connection-properties">
                                                     <div className="property-group">
                            <div className="input-group">
@@ -446,6 +637,14 @@ const StartScreen = ({ onStart }) => {
                                                    </div>
                                                 </div>
                       </div>
+                      <div className="dialog-buttons">
+                        <button 
+                          className="start-button" 
+                          onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+                        >
+                          {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+                        </button>
+                      </div>
                 </h1>
              </div>
                          <div className="welcome-box-back">
@@ -497,34 +696,7 @@ const StartScreen = ({ onStart }) => {
 
 
 
-      {showButtons && (
-        <div className="button-container">
-          {!showSplitButtons && (
-            <button 
-              className={`start-button ${isFlipped ? 'playing' : ''}`} 
-              onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
-            >
-              {isFlipped ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
-            </button>
-          )}
-          {showSplitButtons && (
-            <>
-              <button 
-                className={`start-button split left ${isInstagramStyle ? 'instagram-style' : ''}`} 
-                onClick={isInstagramStyle ? handleCopyNumber : () => handleButtonClick(true)}
-              >
-                {isInstagramStyle ? 'Copy Number' : 'Accept Query'}
-              </button>
-              <button 
-                className={`start-button split right ${isNoButtonInstagram ? 'instagram-style' : ''}`} 
-                onClick={() => handleButtonClick(false)}
-              >
-                {isNoButtonInstagram ? 'Back to Instagram' : 'Cancel Query'}
-              </button>
-            </>
-          )}
-        </div>
-      )}
+
       
       {/* SQL Server Status Bar */}
       <div className="sql-status-bar">

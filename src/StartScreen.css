@@ -48,20 +48,26 @@ body {
   border-bottom: 1px solid var(--sql-border-gray);
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 15px;
   z-index: 100;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  gap: 20px;
+}
+
+.icons-container.hidden {
+  display: none;
 }
 
 .icon-item {
-  color: var(--sql-text-gray);
+  color: #666666;
   font-size: 14px;
-  margin-right: 20px;
   cursor: pointer;
   transition: color 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  text-align: center;
 }
 
 .icon-item:hover {
@@ -70,6 +76,34 @@ body {
 
 .icon-item.active {
   color: var(--sql-light-blue);
+}
+
+.header-title {
+  color: #cccccc;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.header-title i {
+  font-size: 16px;
+  color: #cccccc;
+  animation: connectingPulse 2s ease-in-out infinite;
+}
+
+@keyframes connectingPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* SQL Server Main Content Area - Vertical Split Layout */
@@ -277,41 +311,78 @@ body {
   font-size: 16px;
   line-height: 1.6;
   margin: 0;
-  padding: 5px;
+  margin-top: -10px;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background: #ffffff;
-  border: 2px solid #0078d4;
+  border: 6px solid #0078d4;
+  border-top: 36px solid #0078d4;
   border-radius: 8px;
   width: 100%;
   height: 15%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   overflow: hidden;
-  gap: 0px; /* Reduced from 2px to 0px to eliminate gap between header and query */
+  gap: 0px;
+  position: relative;
+  position: relative;
 }
 
 .welcome-text > * {
-  flex-shrink: 0; /* Prevent flex items from shrinking */
+  flex-shrink: 0;
 }
 
 .welcome-text .sql-panel-header {
-  flex: 0 0 auto; /* Don't grow or shrink */
+  flex: 0 0 auto;
   width: 100%;
-  margin-bottom: 0; /* Remove margin since we're using gap */
+  margin-bottom: 0;
 }
 
-
-
 .welcome-text .sql-connect-dialog {
-  flex: 1; /* Take remaining space */
+  flex: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
+}
+
+.welcome-text .dialog-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.welcome-text .dialog-buttons .start-button {
+  background: #f3f2f1;
+  color: #323130;
+  border: 1px solid #c0c0c0;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  outline: none;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, outline 0.2s;
+  padding: 12px 24px;
+  font-size: 16px;
+  min-width: 150px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.welcome-text .dialog-buttons .start-button:hover,
+.welcome-text .dialog-buttons .start-button:focus {
+  background: #0078d4;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
 
 .welcome-text .highlight {
@@ -331,8 +402,6 @@ body {
   margin: 10px 0;
   color: #333333;
 }
-
-
 
 /* SQL Server Buttons */
 .start-button {
@@ -357,13 +426,14 @@ body {
 }
 
 .start-button:active {
-  background: var(--sql-accent-blue);
+  background: #e0e0e0;
   transform: translateY(1px);
 }
 
 .start-button.playing {
-  background: var(--sql-success-green);
-  border-color: var(--sql-success-green);
+  background: #ffffff;
+  border-color: #4a4a4a;
+  color: #000000;
 }
 
 .start-button.split {
@@ -372,18 +442,31 @@ body {
 }
 
 .start-button.split.left {
-  background: var(--sql-success-green);
-  border-color: var(--sql-success-green);
+  background: #ffffff;
+  border-color: #4a4a4a;
+  color: #000000;
+}
+
+.start-button.split.left:hover {
+  background: #f0f0f0;
+  border-color: #666666;
 }
 
 .start-button.split.right {
-  background: var(--sql-error-red);
-  border-color: var(--sql-error-red);
+  background: #ffffff;
+  border-color: #4a4a4a;
+  color: #000000;
+}
+
+.start-button.split.right:hover {
+  background: #f0f0f0;
+  border-color: #666666;
 }
 
 .start-button.instagram-style {
   background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
-  border: none;
+  border: 2px solid #4a4a4a;
+  color: #ffffff;
 }
 
 /* SQL Server Button Container */
@@ -401,7 +484,7 @@ body {
 }
 
 .button-container.clicked {
-  bottom: 30px;
+  margin-top: 15px;
 }
 
 /* SQL Server Lyrics Display - Table Style - Vertical Split Layout */
@@ -409,7 +492,7 @@ body {
   width: 100%;
   text-align: center;
   position: relative;
-  height: 30%; /* Decreased from 40% to 30% to make it smaller */
+  height: 30%;
   z-index: 5;
   overflow-y: auto;
   background: #ffffff !important;
@@ -444,9 +527,18 @@ body {
 .lyrics-line {
   margin: 2px 0;
   padding: 2px 0;
-  animation: fadeInUp 0.3s ease-out;
+  animation: fadeInUp 0.5s ease-out;
   display: table-row;
+  opacity: 0;
+  animation-fill-mode: forwards;
 }
+
+.lyrics-line:nth-child(1) { animation-delay: 0.1s; }
+.lyrics-line:nth-child(2) { animation-delay: 0.2s; }
+.lyrics-line:nth-child(3) { animation-delay: 0.3s; }
+.lyrics-line:nth-child(4) { animation-delay: 0.4s; }
+.lyrics-line:nth-child(5) { animation-delay: 0.5s; }
+.lyrics-line:nth-child(6) { animation-delay: 0.6s; }
 
 .lyrics-time-container {
   display: table-cell;
@@ -475,7 +567,7 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -596,7 +688,7 @@ body {
   .welcome-text {
     font-size: 14px;
     padding: 20px;
-    height: 70%; /* Increased from 60% to 70% to match the main definition */
+    height: 70%;
   }
   
   .welcome-text h1 {
@@ -604,10 +696,8 @@ body {
   }
   
   .lyrics-container {
-    height: 30%; /* Decreased from 40% to 30% to match the main definition */
+    height: 30%;
   }
-  
-
   
   .start-button {
     padding: 10px 20px;
@@ -645,17 +735,19 @@ body {
   background: var(--sql-dark-blue);
   border: 1px solid var(--sql-border-gray);
   border-radius: 8px;
-  padding: 10px; /* Reduced from 20px to 10px to make it more compact */
+  padding: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
 }
 
 /* Specific styling for Database Query Result panel to reduce gap */
 .sql-panel .sql-panel-header {
-  margin-bottom: 0; /* Remove margin between header and query */
+  margin-bottom: 0;
 }
 
 .sql-panel .sql-query {
-  margin-top: 0; /* Remove top margin from query */
+  margin-top: 0;
 }
 
 /* Specific styling for Query Parameters panel (case 2) to center content */
@@ -702,11 +794,11 @@ body {
 }
 
 .sql-panel-header {
-  font-size: 16px; /* Reduced from 18px to 16px */
+  font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  margin-bottom: 5px; /* Reduced from 20px to 5px to minimize gap */
-  padding: 10px 15px; /* Reduced from 15px 20px to 10px 15px */
+  margin-bottom: 5px;
+  padding: 10px 15px;
   text-align: left;
   background: linear-gradient(90deg, #0078d4, #106ebe);
   border-bottom: 2px solid #0078d4;
@@ -723,15 +815,15 @@ body {
 /* SQL Query Syntax Highlighting */
 .sql-query {
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 12px; /* Reduced from 14px to 12px */
-  line-height: 1.4; /* Reduced from 1.6 to 1.4 for tighter spacing */
+  font-size: 12px;
+  line-height: 1.4;
   text-align: left;
   background: #ffffff;
   color: #333333;
-  padding: 15px; /* Reduced from 20px to 15px */
+  padding: 15px;
   border-radius: 0;
   border: 3px solid #0078d4;
-  margin: -5px 0 0 0; /* Negative top margin to move query box up */
+  margin: -5px 0 0 0;
   white-space: pre-line;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -749,8 +841,6 @@ body {
   border-radius: 0;
 }
 
-
-
 /* SQL Server Connect Dialog */
 .sql-connect-dialog {
   background: #f0f0f0;
@@ -761,7 +851,7 @@ body {
   max-width: 500px;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
-  min-height: 900px; /* Increased from 700px to make it much taller */
+  min-height: 900px;
 }
 
 .dialog-title-bar {
@@ -796,35 +886,51 @@ body {
 }
 
 .dialog-content {
-  padding: 30px; /* Increased from 20px */
-  background: #f0f0f0; /* Restored original background for song reproduction screen */
-  min-height: 800px; /* Increased from 600px to better utilize the larger dialog */
+  padding: 0;
+  background: transparent;
+  min-height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Changed from space-between to flex-start */
-  gap: 20px; /* Added gap between elements */
-  flex: 1; /* Take remaining space */
+  justify-content: flex-start;
+  gap: 0;
+  flex: 1;
+  position: relative;
 }
 
 /* Specific styling for the initial screen (questions screen) */
 .welcome-text .dialog-content {
-  background: transparent; /* Only transparent for the initial screen */
+  background: transparent;
 }
 
 .main-title {
   font-size: 24px;
   font-weight: bold;
-  color: #333333;
+  color: #000000;
   text-align: center;
-  margin-bottom: 0; /* Remove margin since we're using gap */
-  flex: 0 0 auto; /* Don't grow or shrink */
+  margin: 15px 0;
+  flex: 0 0 auto;
+}
+
+
+
+.title-border {
+  height: 8px;
+  background: linear-gradient(to right, transparent 0%, transparent 15%, #ff8c42 35%, #ff8c42 65%, transparent 85%, transparent 100%);
+  margin: 10px 0;
+  width: 100%;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  border-radius: 0;
+  display: block;
 }
 
 .tab-container {
   display: flex;
   border-bottom: 1px solid #c0c0c0;
-  margin-bottom: 0; /* Remove margin since we're using gap */
-  flex: 0 0 auto; /* Don't grow or shrink */
+  margin-bottom: 0;
+  flex: 0 0 auto;
 }
 
 .tab {
@@ -841,39 +947,39 @@ body {
 }
 
 .connection-properties {
-  background: white; /* Restored original background for song reproduction screen */
-  padding: 25px; /* Increased from 15px */
-  border: 1px solid #c0c0c0; /* Restored original border for song reproduction screen */
-  flex: 0 0 auto; /* Changed from flex: 1 to flex: 0 0 auto to not take remaining space */
+  background: transparent;
+  padding: 15px 20px;
+  border: none;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Changed from space-around to flex-start */
-  min-height: auto; /* Changed from 700px to auto */
-  gap: 15px; /* Added gap between property groups */
+  justify-content: flex-start;
+  min-height: auto;
+  gap: 15px;
 }
 
 /* Specific styling for the initial screen (questions screen) */
 .welcome-text .connection-properties {
-  background: transparent; /* Only transparent for the initial screen */
-  border: none; /* Only no border for the initial screen */
+  background: transparent;
+  border: none;
 }
 
 .property-group {
-  margin-bottom: 0; /* Remove margin since we're using gap in parent */
-  flex: 0 0 auto; /* Changed from flex: 1 to flex: 0 0 auto */
+  margin-bottom: 0;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Changed from center to flex-start */
-  gap: 10px; /* Space between label and input */
+  justify-content: flex-start;
+  gap: 10px;
 }
 
 .property-group > label {
   display: block;
   font-weight: 500;
   color: #333333;
-  margin-bottom: 0; /* Remove margin since we're using gap */
+  margin-bottom: 0;
   font-size: 14px;
-  text-align: center; /* Center the question text */
+  text-align: center;
 }
 
 .section-header {
@@ -886,9 +992,9 @@ body {
 .input-group {
   display: flex;
   align-items: center;
-  margin-bottom: 0; /* Remove margin since we're using gap */
+  margin-bottom: 0;
   gap: 10px;
-  justify-content: center; /* Center the input field */
+  justify-content: center;
 }
 
 .input-group label {
@@ -900,29 +1006,45 @@ body {
 .input-field {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.9); /* Changed to semi-transparent white */
+  background: #ffffff;
   border: 1px solid #c0c0c0;
-  padding: 4px 8px;
+  padding: 6px 10px;
   min-width: 150px;
   position: relative;
-  border-radius: 4px; /* Added border radius for better appearance */
+  border-radius: 3px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .input-field:hover {
-  background: rgba(255, 255, 255, 1); /* Full white on hover */
+  background: #f8f8f8;
+  border-color: #a0a0a0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #666666;
+  box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2);
 }
 
 .input-field span {
-  font-size: 12px;
+  font-size: 13px;
   color: #333333;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .dropdown-arrow {
   margin-left: auto;
   color: #666666;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.input-field:hover .dropdown-arrow {
+  transform: rotate(180deg);
 }
 
 .spin-box {
@@ -986,13 +1108,28 @@ body {
 
 .dialog-buttons {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: center;
   gap: 10px;
   padding: 15px 20px;
-  background: #f0f0f0;
+  background: transparent;
   border-top: 1px solid #c0c0c0;
-  flex: 0 0 auto; /* Don't grow or shrink */
-  margin-top: auto; /* Push to bottom */
+  flex: 0 0 auto;
+  margin-top: auto;
+  transition: transform 0.8s ease-out;
+}
+
+.microsoft-orange-bar {
+  height: 5px;
+  width: 95%;
+  background: linear-gradient(to right, transparent 0%, #f25022 20%, #f25022 80%, transparent 100%);
+  border-radius: 2px;
+  margin: 0 auto 10px auto;
+  box-shadow: 0 1px 3px rgba(242, 80, 34, 0.3);
+}
+
+.dialog-buttons.slide-down {
+  transform: translateY(100vh);
 }
 
 .connect-btn {
@@ -1151,33 +1288,365 @@ body {
   top: 100%;
   left: 0;
   right: 0;
-  background: var(--sql-dark-blue);
-  border: 1px solid var(--sql-border-gray);
+  background: #ffffff;
+  border: 1px solid #c0c0c0;
   border-top: none;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 3px 3px;
   z-index: 1000;
   max-height: 150px;
   overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: dropdownFadeIn 0.2s ease-out;
 }
 
 .dropdown-option {
   padding: 8px 12px;
-  color: var(--sql-text-white);
+  color: #333333;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  border-bottom: 1px solid var(--sql-border-gray);
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
 }
 
 .dropdown-option:last-child {
   border-bottom: none;
+  border-radius: 0 0 3px 3px;
 }
 
 .dropdown-option:hover {
-  background: var(--sql-light-blue);
+  background: #e6e6e6;
+  color: #333333;
 }
 
 .dropdown-option:active {
-  background: var(--sql-accent-blue);
+  background: #d0d0d0;
+  color: #333333;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Phase 2 Enhanced Styling */
+.phase-two-panel {
+  background: linear-gradient(135deg, var(--sql-darker-blue) 0%, var(--sql-dark-blue) 100%);
+  border: 2px solid var(--sql-light-blue);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 120, 212, 0.3);
+}
+
+.phase-two-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  gap: 20px;
+}
+
+.message-section {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 120, 212, 0.1);
+  border-radius: 8px;
+  border: 1px solid var(--sql-light-blue);
+}
+
+.romantic-message {
+  color: var(--sql-text-white);
+}
+
+.message-line {
+  font-size: 18px;
+  margin: 10px 0;
+  font-weight: 500;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.message-line.fade-in {
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+.lyrics-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
+.lyrics-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--sql-light-blue);
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: rgba(0, 120, 212, 0.1);
+  border-radius: 6px;
+}
+
+.lyrics-container.enhanced {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--sql-light-blue);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.lyrics-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.lyrics-placeholder i {
+  font-size: 48px;
+  color: var(--sql-light-blue);
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.lyrics-placeholder p {
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(0, 120, 212, 0.05);
+  border-radius: 8px;
+  border: 1px solid var(--sql-border-gray);
+}
+
+.play-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.play-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, var(--sql-light-blue) 0%, var(--sql-accent-blue) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+.play-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 120, 212, 0.4);
+}
+
+.play-button.playing {
+  background: linear-gradient(135deg, var(--sql-success-green) 0%, #0a5a0a 100%);
+  animation: pulse 2s infinite;
+}
+
+.play-button i {
+  font-size: 18px;
+}
+
+.progress-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sql-light-blue) 0%, var(--sql-success-green) 100%);
+  border-radius: 3px;
+  animation: progressAnimation 2s ease-in-out infinite;
+}
+
+.progress-text {
+  color: var(--sql-text-white);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@keyframes progressAnimation {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.lyrics-line.current {
+  background: rgba(0, 120, 212, 0.1);
+  border-left: 3px solid var(--sql-light-blue);
+  animation: highlightCurrent 0.5s ease-out;
+}
+
+@keyframes highlightCurrent {
+  from {
+    background: rgba(0, 120, 212, 0.3);
+    transform: translateX(-10px);
+  }
+  to {
+    background: rgba(0, 120, 212, 0.1);
+    transform: translateX(0);
+  }
+}
+
+/* Phase 2 Dual Screen Layout */
+.phase-two-layout {
+  display: flex;
+  height: 100%;
+  gap: 20px;
+  padding: 20px;
+}
+
+.sql-side {
+  flex: 1;
+  background: linear-gradient(135deg, var(--sql-darker-blue) 0%, var(--sql-dark-blue) 100%);
+  border: 2px solid var(--sql-light-blue);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 120, 212, 0.3);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.sql-side .sql-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--sql-light-blue);
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(0, 120, 212, 0.1);
+  border-radius: 8px;
+  border: 1px solid var(--sql-light-blue);
+}
+
+.sql-side .sql-query {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--sql-border-gray);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.sql-side .romantic-message {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 120, 212, 0.1);
+  border-radius: 8px;
+  border: 1px solid var(--sql-light-blue);
+  color: var(--sql-text-white);
+}
+
+.sql-side .romantic-message p {
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.lyrics-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--sql-darker-blue) 0%, var(--sql-dark-blue) 100%);
+  border: 2px solid var(--sql-light-blue);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 120, 212, 0.3);
+  padding: 20px;
+}
+
+.lyrics-panel .lyrics-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--sql-light-blue);
+  font-weight: 600;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: rgba(0, 120, 212, 0.1);
+  border-radius: 8px;
+  border: 1px solid var(--sql-light-blue);
+}
+
+.lyrics-panel .lyrics-container.enhanced {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--sql-light-blue);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.lyrics-panel .control-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(0, 120, 212, 0.05);
+  border-radius: 8px;
+  border: 1px solid var(--sql-border-gray);
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .phase-two-layout {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .sql-side,
+  .lyrics-panel {
+    min-height: 300px;
+  }
 }
 
