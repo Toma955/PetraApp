@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './AudioPlayer.css';
 
-export default function AudioPlayer({ audioSrc, lyrics, onEnded }) {
+export default function AudioPlayer({ audioSrc, lyrics, onEnded, onPlay, onTimeUpdate }) {
   const audioRef = useRef(null);
   const [currentLine, setCurrentLine] = useState('');
   const [progress, setProgress] = useState(0);
@@ -22,6 +22,11 @@ export default function AudioPlayer({ audioSrc, lyrics, onEnded }) {
     const totalDuration = audioRef.current.duration;
     setDuration(totalDuration);
     setProgress((time / totalDuration) * 100);
+    
+    // Call onTimeUpdate prop if provided
+    if (onTimeUpdate) {
+      onTimeUpdate(time);
+    }
     
     // Find current lyric
     const currentLyric = lyrics.find((lyric, index) => {
@@ -53,6 +58,7 @@ export default function AudioPlayer({ audioSrc, lyrics, onEnded }) {
         controls
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleTimeUpdate}
+        onPlay={onPlay}
         onEnded={onEnded}
       >
         <source src={audioSrc} type="audio/mp3" />
