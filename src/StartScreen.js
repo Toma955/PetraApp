@@ -35,7 +35,6 @@ const StartScreen = ({ onStart }) => {
   const [showDropdown1, setShowDropdown1] = useState(false);
   const [showDropdown2, setShowDropdown2] = useState(false);
   const [showDropdown3, setShowDropdown3] = useState(false);
-  const [isPhaseTwo, setIsPhaseTwo] = useState(false);
   const phoneNumber = '0955709282';
   const instagramLink = 'https://www.instagram.com/_petrakarin/';
   const audioRef = useRef(new Audio(audioFile));
@@ -78,7 +77,6 @@ const StartScreen = ({ onStart }) => {
     if (audioRef.current) {
       const currentTime = audioRef.current.currentTime;
       const duration = audioRef.current.duration;
-      const progress = (currentTime / duration) * 100;
       
 
 
