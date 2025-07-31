@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics, track } from '@vercel/analytics/react';
 import StartScreen from './StartScreen';
 import AudioPlayer from './AudioPlayer';
 import lyrics from './lyrics';
@@ -48,6 +48,14 @@ function App() {
       
       // Log to console for debugging
       console.log('📱 Device Analytics:', analyticsData);
+      
+      // Track with Vercel Analytics
+      track('device_info', {
+        screenSize: `${window.screen.width}x${window.screen.height}`,
+        platform: deviceInfo.platform,
+        isMobile: deviceInfo.isMobile,
+        pixelRatio: deviceInfo.pixelRatio
+      });
       
       fetch('/api/track-app-load', {
         method: 'POST',
