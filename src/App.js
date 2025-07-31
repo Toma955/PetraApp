@@ -36,18 +36,23 @@ function App() {
       };
 
       // Send analytics data
+      const analyticsData = {
+        timestamp: new Date().toISOString(),
+        userAgent: userAgent,
+        referrer: document.referrer,
+        location: window.location.href,
+        screenSize: `${window.screen.width}x${window.screen.height}`,
+        language: navigator.language,
+        deviceInfo: deviceInfo
+      };
+      
+      // Log to console for debugging
+      console.log('📱 Device Analytics:', analyticsData);
+      
       fetch('/api/track-app-load', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          userAgent: userAgent,
-          referrer: document.referrer,
-          location: window.location.href,
-          screenSize: `${window.screen.width}x${window.screen.height}`,
-          language: navigator.language,
-          deviceInfo: deviceInfo
-        })
+        body: JSON.stringify(analyticsData)
       }).catch(err => console.log('Analytics error:', err));
     }
   }, []);
@@ -62,22 +67,27 @@ function App() {
       const isAndroid = /Android/i.test(userAgent);
       const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
       
+      const startAnalyticsData = {
+        action: 'app_started',
+        timestamp: new Date().toISOString(),
+        userAgent: userAgent,
+        deviceInfo: {
+          isMobile,
+          isAndroid,
+          isIOS,
+          platform: isAndroid ? 'Android' : isIOS ? 'iOS' : 'Desktop',
+          screenSize: `${window.screen.width}x${window.screen.height}`,
+          viewportSize: `${window.innerWidth}x${window.innerHeight}`
+        }
+      };
+      
+      // Log to console for debugging
+      console.log('🚀 App Start Analytics:', startAnalyticsData);
+      
       fetch('/api/track-app-start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'app_started',
-          timestamp: new Date().toISOString(),
-          userAgent: userAgent,
-          deviceInfo: {
-            isMobile,
-            isAndroid,
-            isIOS,
-            platform: isAndroid ? 'Android' : isIOS ? 'iOS' : 'Desktop',
-            screenSize: `${window.screen.width}x${window.screen.height}`,
-            viewportSize: `${window.innerWidth}x${window.innerHeight}`
-          }
-        })
+        body: JSON.stringify(startAnalyticsData)
       }).catch(err => console.log('Analytics error:', err));
     }
   };
