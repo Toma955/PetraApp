@@ -1,5 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import StartScreen from './StartScreen';
 import AudioPlayer from './AudioPlayer';
 import lyrics from './lyrics';
@@ -57,6 +58,7 @@ function App() {
           onEnded={() => {/* ... */}}
         />
       )}
+      <Analytics />
     </div>
   );
 }
