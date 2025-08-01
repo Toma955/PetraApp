@@ -1,5 +1,6 @@
 // src/StartScreen.js
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { track } from '@vercel/analytics/react';
 import './StartScreen.css';
 import backgroundImage from './PetraKarin.JPG';
 import audioFile from './PetraKarin.wav';
@@ -200,7 +201,16 @@ const StartScreen = ({ onStart }) => {
 
   const handleButtonClick = (isYes) => {
     if (isYes) {
-             setButtonResponse(`--Hvala ti, kad budeš stekla povjerenje javi se, nadao sam se ovom odgovoru`);
+      // Track Execute button click
+      track('button_click', {
+        button: 'execute',
+        timestamp: new Date().toISOString(),
+        sessionDuration: Math.round((Date.now() - Date.now()) / 1000)
+      });
+      
+      console.log('✅ Execute button clicked!');
+      
+      setButtonResponse(`--Hvala ti, kad budeš stekla povjerenje javi se, nadao sam se ovom odgovoru`);
       setIsNoButtonInstagram(true);
     } else {
       if (isNoButtonInstagram) {
@@ -219,6 +229,15 @@ const StartScreen = ({ onStart }) => {
         }
         window.open(instagramLink, '_blank');
       } else {
+        // Track Cancel button click
+        track('button_click', {
+          button: 'cancel',
+          timestamp: new Date().toISOString(),
+          sessionDuration: Math.round((Date.now() - Date.now()) / 1000)
+        });
+        
+        console.log('❌ Cancel button clicked!');
+        
         setIsCancelled(true);
         
         // Close window after 5 seconds
