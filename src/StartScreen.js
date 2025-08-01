@@ -290,21 +290,89 @@ const StartScreen = ({ onStart }) => {
   };
 
   const handleHeaderButtonClick = (buttonType) => {
+    // Samo mijenja SQL tekst, ne mijenja fazu aplikacije
+    setIsTransitioning(false); // Osiguraj da se tekst prikazuje
     switch(buttonType) {
       case 'query':
-        setCurrentMessage(2);
-        setDisplayedText(renderMessageContent(2));
+        setDisplayedText(renderSQLContent('query'));
         break;
       case 'tables':
-        setCurrentMessage(2);
-        setDisplayedText(renderMessageContent(2));
+        // Dodaj akciju za Database botun
+        console.log('🗄️ Database button clicked!');
+        setDisplayedText(renderSQLContent('tables'));
+        break;
+      case 'database':
+        // Dodaj akciju za Database botun
+        console.log('🗄️ Database button clicked!');
+        setDisplayedText(renderSQLContent('tables'));
         break;
       case 'results':
-        setCurrentMessage(3);
-        setDisplayedText(renderMessageContent(3));
+        setDisplayedText(renderSQLContent('results'));
         break;
       default:
         break;
+    }
+  };
+
+  const renderSQLContent = (sqlType) => {
+    switch(sqlType) {
+      case 'query':
+        return (
+          <div className="sql-panel">
+            <div className="sql-panel-header">Database Query Result</div>
+            <div className="sql-query">
+              <span className="sql-keyword">SELECT</span> <span className="sql-operator">*</span><br/>
+              <span className="sql-keyword">FROM</span> <span className="sql-table">pjesme</span><br/>
+              <span className="sql-keyword">WHERE</span> <span className="sql-column">"Stvoreno za"</span> <span className="sql-operator">=</span> <span className="sql-string">'Petra'</span><br/>
+              &nbsp;&nbsp;<span className="sql-keyword">AND</span> <span className="sql-column">naslov</span> <span className="sql-operator">=</span> <span className="sql-string">'Ona stvarna ti'</span><br/>
+              <span className="sql-keyword">LIMIT</span> <span className="sql-number">1</span><span className="sql-operator">;</span>
+            </div>
+            <div className="button-container">
+              <button 
+                className="start-button" 
+                onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+              >
+                {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+              </button>
+            </div>
+          </div>
+        );
+      case 'tables':
+        return (
+          <div className="sql-panel">
+            <div className="sql-panel-header">Database</div>
+            <div className="sql-query">
+              <span className="sql-comment">-- Ovo sam htio napraviti od prvog momenta kad sam Te vidio, da imaš WebApp u sql stilu i pjesmu svoju koja nigdje nije objavljena.</span>
+            </div>
+            <div className="button-container">
+              <button 
+                className="start-button" 
+                onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+              >
+                {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+              </button>
+            </div>
+          </div>
+        );
+      case 'results':
+        return (
+          <div className="sql-panel">
+            <div className="sql-panel-header">Query Results</div>
+            <div className="sql-query">
+              <span className="sql-comment">-- S toga sam imao par dana odlučio ti ovo napraviti i volio bih ti vidjeti reakciju uživo.</span>
+            </div>
+            <div className="button-container">
+              <button 
+                className="start-button" 
+                onClick={isFaded ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+              >
+                {isFaded ? (isPlaying ? 'Pause Query' : (isSongEnded ? 'Execute Next' : 'Execute Query')) : 'Connect to Server'}
+              </button>
+            </div>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
